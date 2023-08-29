@@ -1,0 +1,68 @@
+﻿@model E_Commerce.Models.AppUser
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/Client/_ClientLayout.cshtml";
+    var email = TempData["EmailExist"];
+   
+}
+
+
+
+
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        
+        <div class="col-md-6">
+            
+            <div style="border-radius:10px" class="border m-3 p-5">
+                <h3 style="align-content:center">UserRegistration</h3>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                       @{
+                            if (email != null)
+                            {
+                                <span>Email already Exist</span>
+                            }
+                       } 
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn-outline-success" />
+                </div>
+            </form>
+            </div>
+        </div>
+       
+        <div class="col-md-3"></div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+
+
+

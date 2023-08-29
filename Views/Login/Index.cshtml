@@ -1,0 +1,45 @@
+﻿@using E_Commerce.Models;
+@model LoginviewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Client/_ClientLayout.cshtml";
+    var masg = TempData["key"];
+    if(masg!=null)
+    {
+        
+    }
+}
+  <div class="container">
+      <div class="row">
+          <div class="col-md-3"></div>
+        <div class="col-md-6">
+           
+                <div class="border m-3 p-4">
+                <h1 style="text-align:center">Login</h1>
+                    <form asp-action="UserLogin">
+                        <div class="form-group">
+                            <label class=" clo-md-3">Email</label>
+                            <div class="">
+                                <input type="text" class="form-control" asp-for="Email" placehoder="user Name" required />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class=" clo-md-3">Password</label>
+                            <div class="">
+                                <input type="text" class="form-control" asp-for="Password" placehoder="user password" required />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn-outline-success mt-3" value="login"  />
+                    </form>
+                </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+  </div>
+
+
+
+

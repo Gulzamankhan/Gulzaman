@@ -1,0 +1,198 @@
+﻿@using E_Commerce.Data;
+@inject AppDbContext _db
+@{
+    ViewData["Title"] = "Client";
+    Layout = "~/Views/Shared/Client/_ClientLayout.cshtml";
+    var product = _db.Products.Select(m => new
+    {
+        m.Name,
+        m.Id,
+        Imageurl = m.Images.OrderBy(x => x.Rank).Select(m => m.Path).FirstOrDefault(),
+        m.Price,
+        categoryName = m.Category.Name
+    }).ToList();
+}
+
+
+
+<!-- Begin Slider With Banner Area -->
+@await Html.PartialAsync("~/Views/Shared/Client/BeginSlider.cshtml")
+<link href="~/commancss/comman.css" rel="stylesheet" />@*
+             <script src="~/lib/vue/dist/vue.global.prod.js"></script>
+                <script src="~/lib/vue/dist/vue.global.js"></script>*@
+<!-- Begin Product Area -->
+@*   @await Html.PartialAsync("~/Views/Shared/Client/ProductAera.cshtml")*@
+
+<!-- Li's Trending Product Area End Here -->
+<!-- Begin Li's Trendding Products Area -->
+<div id="cartApp" v-cloak>
+ 
+    <ul>
+        <li v-for="c in cartList">{{c.name}}& Quantity is"{{c.qty}}"</li>
+    </ul>
+    <section class="product-area li-laptop-product li-trendding-products best-sellers pb-45">
+
+        @foreach (var group in product.GroupBy(m => m.categoryName))
+        {
+            @group.Key
+            ;
+
+            <div class="container">
+                <div class="row">
+                    <!-- Begin Li's Section Area -->
+                    <div class="col-lg-12">
+                        <div class="li-section-title">
+                            <h2>
+                                <span>@group.Key</span>
+                            </h2>
+                        </div>
+                        <div class="row">
+                          
+
+                            <div>
+                                <div class=" d-flex col-lg-12">
+                                    <!-- single-product-wrap start -->
+                                    @foreach (var item in group)
+                                    {
+
+                                        <div class="single-product-wrap">
+
+
+                                            <div class="product-image">
+                                                <a href="single-product.html">
+                                                    <img src="/@item.Imageurl" alt="Li's Product Image">
+                                                </a>
+                                                <span class="sticker">New</span>
+                                            </div>
+                                            <div class="product_desc">
+                                                <div class="product_desc_info">
+                                                    <div class="product-review">
+                                                        <h5 class="manufacturer">
+                                                            <a href="shop-left-sidebar.html">@item.Name</a>
+                                                        </h5>
+                                                        <div class="rating-box">
+                                                            <ul class="rating">
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                                                <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <h4><a class="product_name" href="single-product.html">@item.categoryName</a></h4>
+                                                    <div class="price-box">
+                                                        <span class="new-price">$@item.Price</span>
+                                                    </div>
+                                                </div>
+                                                <div class="add-actions">
+
+                                                    <ul class="add-actions-link">
+
+                                                        <li class="add-cart active" @@click="AddToCart('@item.Id')">add to cart</li>
+                                                        @*<li> <input type="submit" value="Add To Cart" class="add-cart active" @@click="addToCart('@item.Id')"></li>*@
+                                                        <li><a class="links-details" href="wishlist.html"><i class="fa fa-heart-o"></i></a></li>
+                                                        <li><a href="#" title="quick view" class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-eye"></i></a></li>
+                                                    </ul>
+                                                    @*<button class="add-to-cart-btn" ><i class="fa fa-shopping-cart"></i> add to cart</button>*@
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <!-- single-product-wrap end -->
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Li's Section Area End Here -->
+                </div>
+            </div>
+
+        }
+
+
+        @{
+            var userregister = TempData["userregister"];
+            if (userregister != null)
+            {
+
+                <div>
+                    <script>
+                        swal({
+                            title: "User!",
+                            text: " Registrad successfully",
+                            icon: "success",
+                        });
+                    </script>
+                </div>
+
+            };
+            var userlogin = TempData["userlogin"];
+            if (userlogin != null)
+            {
+
+                <div>
+                    <script>
+                        swal({
+                            title: "LOGIN!",
+                            text: " Login successfully",
+                            icon: "success",
+                        });
+                    </script>
+                </div>
+
+            }
+        }
+
+    </section>
+</div>
+
+
+@section js{
+    <script>
+        $(document).ready(() => {
+
+            var a = $('single-product-wrap .product-image');
+            $.each(a, (index, element) => {
+                var toappend = `<h2>Helo Gulraiz</h2>`
+                var color = $(element).append(toappend);
+                console.log(color);
+
+            });
+        });
+        var cartApp = Vue.createApp({
+            data() {
+                return {
+
+                    cartList: [],
+                    isLoggedin: @Json.Serialize(_db.GetloggedinUser()!=null)
+                                    }
+            },
+            methods: {
+                AddToCart: function (id) {
+                    if (!this.isLoggedin) {
+                        window.location.assign('/Login/Index')
+                    }
+                    $.post('/Cart/AddOrUpdateCart', { id: id }, function (res) {
+                        if (res.status) {
+
+                            cartApp.cartList = res.data;
+
+                        }
+                    })
+                },
+
+            }
+
+        }).mount('#cartApp')
+
+
+    </script>
+
+            }
+
+

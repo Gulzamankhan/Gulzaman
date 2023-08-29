@@ -1,0 +1,9 @@
+﻿table.action3 td:last-child{
+
+    width:121px;
+}
+imagedisplay{
+    display:inline;
+}[v-cloak]{
+     display:none;
+ }

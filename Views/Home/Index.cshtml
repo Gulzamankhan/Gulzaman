@@ -1,0 +1,17 @@
+﻿
+
+@{
+    
+    Layout = "~/Views/Shared/Admin/_LayoutAdmin.cshtml";
+}
+
+<!--  Row 1 -->
+@await Html.PartialAsync("~/Views/Shared/Admin/SalesOverView.cshtml");
+@await Html.PartialAsync("~/Views/Shared/Admin/RatingItem.cshtml");
+@await Html.PartialAsync("~/Views/Shared/Admin/RecentTransactions.cshtml");
+
+@section js{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+       }
+

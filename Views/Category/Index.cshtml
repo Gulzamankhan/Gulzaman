@@ -1,0 +1,76 @@
+﻿@using E_Commerce.Models;
+@model E_Commerce.Models.Category
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Admin/_LayoutAdmin.cshtml";
+}
+
+<div>
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+    <div class="container-fluid">
+        <div class="container-fluid">
+          <div class="card" style="background-color:lightgray">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold mb-4">CreateCategory</h5>
+              <div class="card">
+                <div class="card-body">
+                                    <form asp-action="Insert" class="Category-form-post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                      <label asp-for="Name" class="form-label"></label>
+                      <input asp-for="Name" class="form-control" >
+                       <span asp-validation-for="Name"></span>
+                    </div>
+                    <div class="mb-3">
+                      <label asp-for="Description" class="form-label"></label>
+                          <textarea asp-for="Description" class="form-control"></textarea>
+                          <span asp-validation-for="Description"></span>
+                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="Status" class="form-label">Status</label>
+                                        <input asp-for="Status">
+                                        <span asp-validation-for="Status"></span>
+                                    </div>
+                    <div class="mb-3">
+                      <label asp-for="ImgeLogo" class="form-label"></label>
+                      <input asp-for="ImgeLogo" class="form-control" >
+                       <span asp-validation-for="ImgeLogo"></span>
+                    </div>
+                                   @* <div class="mb-3">
+                                        <label asp-for="Type" class="form-label"></label>
+                                      <select asp-for="Type">
+                                            @foreach (CategoryType item in Enum.GetValues(typeof(CategoryType)))
+                                            {
+                                                <option value="@item.ToString()">@item.ToString()</option>
+                                            }
+                                      </select>
+                                        <span asp-validation-for="ImgeLogo"></span>
+                                    </div>*@
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>   
+    
+</div>
+    </div>
+    <div>
+        <a asp-action="Select"  class=" btn btn-primary">
+        Back to List
+    </a>
+</div>
+    <div class="col-sm-4"></div>
+</div>
+
+
+@section js{
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+}

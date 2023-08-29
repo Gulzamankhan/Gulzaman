@@ -1,0 +1,180 @@
+﻿@using E_Commerce.Data;
+@using E_Commerce.Models;
+@model IEnumerable<E_Commerce.Models.Category>
+@inject AppDbContext _db
+@{
+    CategoryType type = ViewBag.type;
+    ViewData["Title"] = "select";
+    Layout = "~/Views/Shared/Admin/_LayoutAdmin.cshtml";
+  
+
+}
+
+
+
+<p>
+    <a asp-action="Index" class="btn-category-create">Create(Newline)</a>
+
+    <a asp-action="Index">Create New</a>
+</p>
+<div class="category-form ">
+    <div class="form-area"></div>
+    <i class="fa fa-spin fa-spinner text-bg-info d-none"></i>
+    </div>
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Categories(@type)</h4>
+       
+        
+  
+
+<table class="table action3">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+           @* <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.EntryTime)
+            </th>
+            <th>
+                 @Html.DisplayNameFor(model => model.Status)
+                
+            </th>
+            <th> @Html.DisplayNameFor(model => model.Logo)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+               
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryTime)
+            </td>
+                <td>
+                   @* @Html.DisplayFor(modelItem => item.Status)*@
+                    @if(item.Status)
+                    {
+                        <span class="badge bg-success text-white">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Block</span>
+                    }
+
+                </td>
+                <td>
+                   <img class="icon" src="/@item.Logo" width="40"/>
+                </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="fa fa-edit"></a> |
+                    <a asp-action="Select" asp-controller="Product" asp-route-CategoryId="@item.Id" class="fa fa-list"></a> |
+                    <a asp-action="Get" asp-route-id="@item.Id" class="fa-solid fa-trash"></a>
+                   
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    </div>
+</div>
+@section js{
+    
+            
+    @{
+        var delete = TempData["delete"];
+        if (delete != null)
+        {
+
+            <div>
+                <script>
+                    swal({
+
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover this imaginary file!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                swal("Poof! Your imaginary file has been deleted!", {
+                                    icon: "success",
+                                });
+                            } 
+                            else {
+                                swal("Your imaginary file is safe!");
+                            }
+                        });
+                </script>
+            </div>
+        }
+        var update = TempData["update"];
+        if (update != null)
+        {
+
+            <div>
+                <script>
+                    swal({
+                        title: "Category!",
+                        text: "Category is Updated successfull",
+                        icon: "success",
+                    });
+                </script>
+            </div>
+        }
+        
+        var added = TempData["Added"];
+        if (added != null)
+        {
+
+            <div>
+                <script>
+                    swal({
+                        title: "Category!",
+                        text: "Category is Added successfull",
+                        icon: "success",
+                    });
+                </script>
+                </div>
+            }
+            
+        }
+        
+    
+    <script>
+        $(".btn-category-create").click(function (e) {
+            e.preventDefault();
+            $(".category-form .fa-spinner").removeClass("d-none")
+            $.get('/Category/Index?iar=true', function (res) {
+                $(".category-form .fa-spinner").addClass("d-none")
+                $(".category-form .form-area").hide(0).html(res).slideDown(1500);
+                
+            });
+            $(document).on("submit", '.Category-form-post', function (e) {
+                e.preventDefaulte();
+                var form = new Form(this);
+                $post("/Category/Index", form, function (e) {
+                    e.prevetDefaulte();
+                    
+
+
+                })
+            })
+        })
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+}
